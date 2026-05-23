@@ -4,7 +4,8 @@ from .swin_onepath import SwinTransformer
 from .resnet_onepath import ResNet1P
 from .efficientnet_timm import EfficientNet1PTimm
 from .oneP_XL import XLBackbone
+from .swin_transformer import Swin1P
 from .eva import EVA
 from .timm import Backbone1P
-
-
+from .dino import DINO1P
+from .empty import EmptyE

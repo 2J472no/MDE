@@ -1,6 +1,6 @@
 # dataset settings
 dataset_type = 'KITTIDataset'
-data_root = './'
+data_root = 'D:/dataset/ws/'
 img_norm_cfg = dict(
     mean=[123.675, 116.28, 103.53], std=[58.395, 57.12, 57.375], to_rgb=True)
 crop_size= (352, 704)
@@ -48,7 +48,7 @@ data = dict(
     train=dict(
         type=dataset_type,
         data_root=data_root,
-        img_dir='input',
+        img_dir='input/',
         ann_dir='gt_depth',
         depth_scale=256,
         split='kitti_eigen_train.txt',
@@ -60,7 +60,7 @@ data = dict(
     val=dict(
         type=dataset_type,
         data_root=data_root,
-        img_dir='input',
+        img_dir='input/',
         ann_dir='gt_depth',
         depth_scale=256,
         split='kitti_eigen_test.txt',
@@ -72,7 +72,7 @@ data = dict(
     test=dict(
         type=dataset_type,
         data_root=data_root,
-        img_dir='input',
+        img_dir='input/',
         ann_dir='gt_depth',
         depth_scale=256,
         split='kitti_eigen_test.txt',

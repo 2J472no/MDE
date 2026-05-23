@@ -133,6 +133,11 @@ class DefaultFormatBundle(object):
             results['depth_gt'] = DC(
                 to_tensor(results['depth_gt'][None, ...]),
                 stack=True)
+        for key in ('edge_map', 'mix_edge'):
+            if key in results:
+                results[key] = DC(
+                    to_tensor(results[key][None, ...]),
+                    stack=True)
         return results
 
     def __repr__(self):

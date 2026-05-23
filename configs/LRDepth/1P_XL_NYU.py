@@ -3,27 +3,27 @@ _base_ = [
     '../_base_/default_runtime.py',
 ]
 
+norm_cfg = dict(type='BN', requires_grad=True)
 model = dict(
     type='DepthEncoderDecoder',
     backbone=dict(
-        type='EVA',
-        patch_size=(32, 32),
+        type='DINO1P',
     ),
     decode_head=dict(
         type='OneP',
         final_norm=False,
-        in_channels=[64, 128, 2048, 1024],
-        group_size=(4, 8, 32, 16),
-        channels=64,
+        in_channels=[96, 128, 768, 1024],
+        group_size=(2, 4, 16, 32),
+        channels=96,
         kernel=6,
         scale_up=True,
         min_depth=1e-3,
         max_depth=10,
         loss_decode=dict(
             type='SigLoss', valid_mask=True, loss_weight=1.0)),
+    # model training and testing settings
     train_cfg=dict(),
-    test_cfg=dict(mode='whole')
-    )
+    test_cfg=dict(mode='whole'))
 
 SyncBN = True
 

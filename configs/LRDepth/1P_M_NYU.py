@@ -6,7 +6,7 @@ _base_ = [
 model = dict(
     type='DepthEncoderDecoder',
     backbone=dict(
-        type='EfficientNet1P'),
+        type='EfficientNet1PTimm'),
     decode_head=dict(
         type='OneP',
         final_norm=False,
@@ -17,7 +17,7 @@ model = dict(
         min_depth=1e-3,
         max_depth=10,
         loss_decode=dict(
-            type='SigLoss', valid_mask=True, loss_weight=10.0)),
+            type='SigLoss', valid_mask=True, loss_weight=1.0)),
     train_cfg=dict(),
     test_cfg=dict(mode='whole'))
 

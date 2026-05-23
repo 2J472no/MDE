@@ -38,11 +38,7 @@ class block(nn.Module):
             for i in range(self.num):
                 self.add_module(f'conv{2 * i + 1}',
                                 nn.Sequential(
-                                    # DropPath(drop_rate),
-                                    # nn.Dropout2d(drop_rate),
-                                    nn.Dropout2d(drop_rate),
                                     nn.GroupNorm(self.groups, self.in_channels),
-                                    # DropPath(drop_rate),
                                     nn.Conv2d(self.in_channels, self.in_channels, kernel_size=2 * i + 1, padding=i,
                                               groups=self.groups
                                               )
@@ -54,27 +50,17 @@ class block(nn.Module):
     def get_equivalent_kernel_bias(self):
         kernel = 0.
         bias = 0.
+        # num = 4
         if self.num > 1:
             for i in range(self.num):
-                conv_weight, conv_bias = (getattr(self, f'conv{2 * i + 1}')[2].weight.data,
-                                          getattr(self, f'conv{2 * i + 1}')[2].bias.data)
-                norm_weight, norm_bias = (getattr(self, f'conv{2 * i + 1}')[1].weight.data,
+                conv_weight, conv_bias = (getattr(self, f'conv{2 * i + 1}')[1].weight.data,
                                           getattr(self, f'conv{2 * i + 1}')[1].bias.data)
+                norm_weight, norm_bias = (getattr(self, f'conv{2 * i + 1}')[0].weight.data,
+                                          getattr(self, f'conv{2 * i + 1}')[0].bias.data)
 
-                # ======================================================================================================
-                norm_weight = norm_weight.view(self.gs, -1).transpose(0, 1).repeat(self.gs, 1).unsqueeze(-1).unsqueeze(-1)
-                norm_bias = norm_bias.view(self.gs, -1).transpose(0, 1).repeat(
-                    self.gs, 1).unsqueeze(-1).unsqueeze(-1)
-                kernel += F.pad(conv_weight, (self.num - i - 1,) * 4) * norm_weight
+                kernel += F.pad(conv_weight, (self.num - i - 1,) * 4) * norm_weight.view(norm_weight.size(0), 1, 1, 1)
                 bias += conv_bias + torch.sum(
-                    (conv_weight * norm_bias).view(conv_bias.size(0), -1), -1)
-                # ======================================================================================================
-                # Even though this re-parameterization method is inconsistent with the model in train mode,
-                # the results are still very close.
-                # kernel += F.pad(conv_weight, (self.num - i - 1,) * 4) * norm_weight.view(norm_weight.size(0), 1, 1, 1)
-                # bias += conv_bias + torch.sum(
-                #     (conv_weight * norm_bias.view(norm_weight.size(0), 1, 1, 1)).view(conv_bias.size(0), -1), -1)
-                # ======================================================================================================
+                    (conv_weight * norm_bias.view(norm_weight.size(0), 1, 1, 1)).view(conv_bias.size(0), -1), -1)
 
         return kernel, bias
 
@@ -93,7 +79,7 @@ class block(nn.Module):
                 self.rp_conv[1].weight.data, self.rp_conv[1].bias.data = self.get_equivalent_kernel_bias()
             else:
                 self.rp_conv = nn.Identity()
-                
+
         super().train(mode)
 
     def forward(self, x):
@@ -165,9 +151,11 @@ class OneP(DepthBaseDecodeHead):
     def forward(self, features, img_metas):
         x = features
         for i in range(1, self.stage):
+            # x = GradMultiply.apply(x, 0.8)
             x = getattr(self, f'block{i}')(x)
 
             if i != self.stage-1:
+                # x = GradMultiply.apply(x, 0.8)
                 x = getattr(self, f'up{i}')(x)
 
         output = self.depth_pred(x)

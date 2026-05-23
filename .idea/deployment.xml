@@ -9,7 +9,21 @@
           </mappings>
         </serverdata>
       </paths>
+      <paths name="miya_g">
+        <serverdata>
+          <mappings>
+            <mapping local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
       <paths name="nc@klogin.mslab:22 agent">
+        <serverdata>
+          <mappings>
+            <mapping local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
+      <paths name="riken">
         <serverdata>
           <mappings>
             <mapping local="$PROJECT_DIR$" web="/" />

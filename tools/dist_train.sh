@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-#CONFIG=$1
-GPUS=$1
+CONFIG=$1
+GPUS=$2
 PORT=${PORT:-38423}
 
 

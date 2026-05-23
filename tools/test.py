@@ -21,9 +21,20 @@ def parse_args():
     parser = argparse.ArgumentParser(
         description='depth test (and eval) a model')
     parser.add_argument('--config',
-                        default='configs/LRDepth/1P_S_NYU.py',
+                        # default='../configs/LRDepth/1P_L_NYU.py',
+                        # default='../configs/LRDepth/1P_XL_NYU.py',
+                        # default='../configs/LRDepth/1P_S_kitti.py',
+                        # default='../configs/LRDepth/1P_M_kitti.py',
+                        default='../configs/LRDepth/1P_L_kitti.py',
                         help='test config file path')
-    parser.add_argument('checkpoint', help='checkpoint file')
+    parser.add_argument('--checkpoint',
+                        # default=r'D:\PythonProject\riken\best_abs_rel_iter_86400.pth',
+                        # default=r'D:\PythonProject\riken\best_abs_rel_iter_86400.pth',
+                        # default=r'C:\Users\u2j47\PycharmProjects\Head\1P-XL.pth',
+                        # default=r'C:\Users\u2j47\PycharmProjects\Head\1P-M-K.pth',
+                        default=r'C:\Users\u2j47\PycharmProjects\Head\1P-L-K.pth',
+                        # default=r'C:\Users\u2j47\PycharmProjects\Head\1P-S-K.pth',
+                        help='checkpoint file')
     parser.add_argument(
         '--aug-test', action='store_true', help='Use Flip and Multi scale aug')
     parser.add_argument('--out', help='output result file in pickle format')
@@ -35,6 +46,7 @@ def parse_args():
         'submit it to the test server')
     parser.add_argument(
         '--eval',
+        default='mIoU',
         type=str,
         nargs='+',
         help='evaluation metrics, which depends on the dataset, e.g., "mIoU"'
@@ -132,7 +144,10 @@ def main():
         wrap_fp16_model(model)
     
     # for other models
+    model = model.eval()
     checkpoint = load_checkpoint(model, args.checkpoint, map_location='cpu')
+    # model = model.eval()
+    # torch.save(model.state_dict(), r'C:\Users\u2j47\PycharmProjects\Head\PrivateTool\1P-S-K.pth')
 
     # clean gpu memory when starting a new evaluation.
     torch.cuda.empty_cache()

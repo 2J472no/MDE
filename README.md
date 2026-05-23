@@ -3,16 +3,15 @@
 ---
 
 ## 📚 Table of Contents
-- [Introduction](#introduction)
-- [Installation](#installation)
-- [Usage](#usage)
-- [Examples](#examples)
-- [Results](#results)
-- [Acknowledgements](#acknowledgements)
-- [Contributing](#contributing)
-- [License](#license)
-- [Citations](#citations)
-- [Checkpoint](#checkpoint)
+- [🚀 Introduction](#-introduction)
+- [💻 Installation](#-installation)
+- [⚡ Usage](#-usage)
+- [📊 Results](#-results)
+- [🙏 Acknowledgements](#-acknowledgements)
+- [🤝 Contributing](#-contributing)
+- [📝 License](#-license)
+- [📚 Citations](#-citations)
+- [⏳ Checkpoint](#-checkpoint)
 
 ---
 
@@ -137,3 +136,9 @@ If you use this code or project in your research, please cite our paper as follo
 }
 
 ```
+
+## ✅ TODO
+- [ ] ×Net code release
+- [ ] Mixed-datasets training
+- [ ] Remove mmcv dependency
+

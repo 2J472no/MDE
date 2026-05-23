@@ -1,19 +1,22 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 from .compose import Compose
-from .formating import (Collect, ImageToTensor, ToDataContainer, ToTensor,
-                        Transpose, to_tensor)
+from .formating import (Collect, DefaultFormatBundle, ImageToTensor,
+                        ToDataContainer, ToTensor, Transpose, to_tensor)
+from .loading import (DepthLoadAnnotations, DisparityLoadAnnotations,
+                      LoadImageFromFile, LoadKITTICamIntrinsic)
 from .test_time_aug import MultiScaleFlipAug
-
-from .loading import DepthLoadAnnotations, DisparityLoadAnnotations, LoadImageFromFile, LoadKITTICamIntrinsic
-from .transforms import KBCrop, RandomRotate, RandomFlip, RandomCrop, NYUCrop, NYUMask, Resize, Normalize,\
-    RandomChannelSwap, RandomMask, CutDepth, GaussianBlur
-from .formating import DefaultFormatBundle
+from .transforms import (ColorAug, Depth2Edge, KBCrop, MD2EDepth2Edge,
+                         NYUCrop, NYUMask, Normalize, RandomChannelSwap,
+                         RandomCrop, RandomFlip, RandomMask, RandomRotate,
+                         Resize)
 
 __all__ = [
-    'Compose', 'Collect', 'ImageToTensor', 'ToDataContainer', 'ToTensor',
-    'Transpose', 'to_tensor', 'MultiScaleFlipAug',
-
-    'DepthLoadAnnotations', 'KBCrop', 'RandomRotate', 'RandomFlip', 'RandomCrop', 'DefaultFormatBundle',
-    'NYUCrop', 'NYUMask', 'DisparityLoadAnnotations', 'Resize', 'LoadImageFromFile', 'Normalize', 'LoadKITTICamIntrinsic',
-    'RandomChannelSwap',
+    'Compose', 'Collect', 'DefaultFormatBundle', 'ImageToTensor',
+    'ToDataContainer', 'ToTensor', 'Transpose', 'to_tensor',
+    'MultiScaleFlipAug',
+    'DepthLoadAnnotations', 'DisparityLoadAnnotations', 'LoadImageFromFile',
+    'LoadKITTICamIntrinsic',
+    'ColorAug', 'Depth2Edge', 'MD2EDepth2Edge', 'KBCrop', 'NYUCrop',
+    'NYUMask', 'Normalize', 'RandomChannelSwap', 'RandomCrop', 'RandomFlip',
+    'RandomMask', 'RandomRotate', 'Resize',
 ]
