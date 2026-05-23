@@ -84,6 +84,7 @@ In our paper, we present the following experimental results:
 
 - **[LR²Depth](https://2j472no.github.io/LRDepth/)**
 - **[×Net](https://2j472no.github.io/LRDepth/)**
+- **[MD2E](https://2j472no.github.io/MD2E/)**
 
 ---
 
