@@ -28,6 +28,9 @@ This project is based on multiple papers, each contributing to different aspects
 ### 📄 [Is Pre-training Applicable to the Decoder for Dense Prediction? (×Net) — ICRA 2026](https://ieeexplore.ieee.org/abstract/document/11246436/)
 - 🎯 **A dense prediction method can directly use a baseline model (e.g., ConvNeXt) as the decoder**
 
+### 📄 [MD2E: Modeling Depth-to-Edge Cues for Monocular Metric Depth Estimation — CVPR 2026](https://2j472no.github.io/MD2E/)
+- 🎯 **A monocular metric depth estimation method that models depth-to-edge cues**
+
 
 
 ## 💻 Installation
@@ -68,11 +71,50 @@ Example:
 bash tools/dist_train.sh configs/LRDepth/1P_L_NYU.py 8
 ```
 
+MD2E inference:
+```bash
+python tools/test.py \
+  --config configs/MD2E/md2e.py \
+  --checkpoint checkpoint.pth \
+  --out outputs/md2e_results.pkl
+```
+
+MD2E training smoke check:
+```bash
+python tools/verify_md2e_training.py \
+  --config configs/MD2E/md2e.py \
+  --checkpoint 
+```
+
+MD2E multi-resolution schedule check:
+```bash
+python tools/verify_md2e_training.py --dry-run-config
+```
+
+MD2E multi-resolution training:
+```bash
+bash tools/dist_train_md2e.sh configs/MD2E/md2e.py 8 \
+  --work-dir work_dirs/md2e \
+  --options model.decode_head.encoder_checkpoint=checkpoints/dinov2_vitl14_reg4.pth
+```
+
+Use `--fixed-resolution` with `tools/train_md2e.py` or `tools/dist_train_md2e.sh` to keep the crop size from `configs/_base_/datasets/md2e.py`.
+
 ### ⚙️ Configuration
 
 All config files are located in [`configs/`](./configs). For detailed configuration formats and customization, please refer to [MMSegmentation](https://github.com/open-mmlab/mmsegmentation).
 
 For dataset preparation (e.g., **NYU Depth V2** and **KITTI**), please follow the instructions in [Monocular-Depth-Estimation-Toolbox](https://github.com/zhyever/Monocular-Depth-Estimation-Toolbox).
+
+For MD2E, point the config at your own data with environment variables:
+
+```bash
+export MD2E_DATA_ROOT=<data-root>
+export MD2E_IMAGE_DIR=<image-subdirectory>
+export MD2E_DEPTH_DIR=<depth-subdirectory>
+```
+
+The two file directories are paired by sorted file order. Depth files should contain metric depth values; set `depth_scale` in `configs/_base_/datasets/md2e.py` if your files use a different unit.
 
 
 
@@ -97,6 +139,7 @@ This project builds upon and is inspired by [MMCV](https://github.com/open-mmlab
 ## ⏳ Checkpoint
 
 - **[LR²Depth](https://drive.google.com/drive/folders/1chwRjjHw_egtt4hIsnoC9dEL_wWUgS5-?usp=sharing)**
+
 
 
 ---
@@ -134,6 +177,13 @@ If you use this code or project in your research, please cite our paper as follo
   author={Ning, Chao and Gan, Wanshui and Xuan, Weihao and Yokoya, Naoto},
   journal={arXiv preprint arXiv:2503.07637},
   year={2025}
+}
+
+@inproceedings{ning2026md2e,
+  title={MD2E: Modeling Depth-to-Edge Cues for Monocular Metric Depth Estimation},
+  author={Ning, Chao and Shen, Minghe and Yokoya, Naoto},
+  booktitle={Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition},
+  year={2026}
 }
 
 ```

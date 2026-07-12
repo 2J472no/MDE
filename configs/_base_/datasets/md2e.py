@@ -1,5 +1,9 @@
-dataset_type = 'CustomDepthDataset'
-data_root = 'data/md2e/'
+import os
+
+dataset_type = 'MD2EDepthDataset'
+data_root = os.getenv('MD2E_DATA_ROOT', 'data/md2e')
+img_dir = os.getenv('MD2E_IMAGE_DIR', 'images')
+depth_dir = os.getenv('MD2E_DEPTH_DIR', 'depths')
 
 img_norm_cfg = dict(
     mean=[123.675, 116.28, 103.53],
@@ -15,6 +19,7 @@ train_pipeline = [
          gamma_range=[0.9, 1.1],
          brightness_range=[0.75, 1.25],
          color_range=[0.9, 1.1]),
+    dict(type='RandomCrop', crop_size=(768, 1024), resize_prob=0.0),
     dict(type='MD2EDepth2Edge', quantile=0.9),
     dict(type='Normalize', **img_norm_cfg),
     dict(type='DefaultFormatBundle'),
@@ -42,6 +47,8 @@ data = dict(
     train=dict(
         type=dataset_type,
         data_root=data_root,
+        img_dir=img_dir,
+        depth_dir=depth_dir,
         test_mode=False,
         depth_scale=1,
         pipeline=train_pipeline,
@@ -50,6 +57,8 @@ data = dict(
     val=dict(
         type=dataset_type,
         data_root=data_root,
+        img_dir=img_dir,
+        depth_dir=depth_dir,
         test_mode=True,
         depth_scale=1,
         pipeline=test_pipeline,
@@ -58,6 +67,8 @@ data = dict(
     test=dict(
         type=dataset_type,
         data_root=data_root,
+        img_dir=img_dir,
+        depth_dir=depth_dir,
         test_mode=True,
         depth_scale=1,
         pipeline=test_pipeline,
